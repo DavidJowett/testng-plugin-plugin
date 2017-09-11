@@ -109,7 +109,7 @@ public class PublisherTest {
         before.setEscapeTestDescp(false);
         before.setEscapeExceptionMsg(false);
         before.setShowFailedBuilds(true);
-        before.setFailureOnFailedTestConfig(false);
+	before.setActionOnFailedTestConfig(1);
         before.setUnstableSkips(0);
         before.setUnstableFails(0);
         before.setFailedSkips(0);

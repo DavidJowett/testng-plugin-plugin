@@ -253,7 +253,7 @@ public class TestNGTestResultBuildActionTest {
         FreeStyleProject p = r.createFreeStyleProject();
         Publisher publisher = new Publisher();
         publisher.setReportFilenamePattern("testng.xml");
-        publisher.setFailureOnFailedTestConfig(true);
+	publisher.setActionOnFailedTestConfig(3);
         publisher.setFailedSkips(10); //these prevent the skip that results from config failure from determining result
         publisher.setUnstableSkips(10);
         p.getPublishersList().add(publisher);

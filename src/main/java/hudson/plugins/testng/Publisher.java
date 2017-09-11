@@ -38,7 +38,8 @@ public class Publisher extends Recorder implements SimpleBuildStep {
    //should exception messages be HTML escaped or not
    private boolean escapeExceptionMsg = true;
    //failed config mark build as failure
-   private boolean failureOnFailedTestConfig = false;
+   private Integer actionOnFailedTestConfig = 1;
+
    //should failed builds be included in graphs or not
    private boolean showFailedBuilds = false;
    //v1.11 - marked transient and here just for backward compatibility
@@ -88,13 +89,13 @@ public class Publisher extends Recorder implements SimpleBuildStep {
        this.escapeExceptionMsg = escapeExceptionMsg;
    }
 
-   public boolean getFailureOnFailedTestConfig() {
-       return failureOnFailedTestConfig;
+   public Integer getActionOnFailedTestConfig(){
+	   return actionOnFailedTestConfig; 
    }
 
    @DataBoundSetter
-   public void setFailureOnFailedTestConfig(boolean failureOnFailedTestConfig) {
-       this.failureOnFailedTestConfig = failureOnFailedTestConfig;
+   public void setActionOnFailedTestConfig(Integer actionOnFailedTestConfig){
+	this.actionOnFailedTestConfig = actionOnFailedTestConfig;
    }
 
    public boolean getShowFailedBuilds() {
@@ -223,9 +224,23 @@ public class Publisher extends Recorder implements SimpleBuildStep {
       if (results.getTestList().size() > 0) {
          //create an individual report for all of the results and add it to the build
          build.addAction(new TestNGTestResultBuildAction(results, escapeTestDescp, escapeExceptionMsg, showFailedBuilds));
-         if (failureOnFailedTestConfig && results.getFailedConfigCount() > 0) {
-            logger.println("Failed configuration methods found. Marking build as FAILURE.");
-            build.setResult(Result.FAILURE);
+	 if(results.getFailedConfigCount() > 0){
+		 logger.println("Found " + results.getFailedConfigCount() + " failed test configuration methods.");
+		 switch(actionOnFailedTestConfig){
+			 case 1:
+				 logger.println("Failed configuration methods found. Taking no special action.");
+				 break;
+			 case 2:
+				 logger.println("Failed configuration methods found. Marking build as UNSTABLE.");
+				 build.setResult(Result.UNSTABLE);
+				 break;
+			 case 3:
+				 logger.println("Failed configuration methods found. Marking build as FAILURE.");
+				 build.setResult(Result.FAILURE);
+				 break;
+			 default:
+				 break;
+		 }
          } else {
         	 if (thresholdMode == 1) { //number of tests
         		 if (results.getFailCount() > failedFails)  {
