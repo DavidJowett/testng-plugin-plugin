@@ -152,7 +152,7 @@ public class Publisher extends Recorder {
       if (results.getTestList().size() > 0) {
          //create an individual report for all of the results and add it to the build
          build.addAction(new TestNGTestResultBuildAction(results));
-	 if(results.getFailedConfigCount() > 0){
+	 if(results.getFailedConfigCount() > 0 && actionOnFailedTestConfig != null){
 		 logger.println("Found " + results.getFailedConfigCount() + " failed test configuration methods.");
 		 switch(actionOnFailedTestConfig){
 			 case 1:
