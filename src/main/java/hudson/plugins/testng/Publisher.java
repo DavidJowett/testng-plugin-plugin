@@ -40,8 +40,11 @@ public class Publisher extends Recorder implements SimpleBuildStep {
    //failed config mark build as failure
    private Integer actionOnFailedTestConfig = 1;
 
+   private boolean failureOnFailedTestConfig = false;
+
    //should failed builds be included in graphs or not
    private boolean showFailedBuilds = false;
+
    //v1.11 - marked transient and here just for backward compatibility
    @Deprecated
    public transient boolean unstableOnSkippedTests;
@@ -58,6 +61,15 @@ public class Publisher extends Recorder implements SimpleBuildStep {
 
    @Extension
    public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
+
+   public boolean getFailureOnFailedTestConfig(){
+	return failureOnFailedTestConfig;
+   }
+
+   @DataBoundSetter
+   public void setFailureOnFailedTestConfig(boolean failureOnFailedTestConfig){
+	   this.failureOnFailedTestConfig = failureOnFailedTestConfig;
+   }
 
    @DataBoundConstructor
    public Publisher() {}
@@ -176,6 +188,11 @@ public class Publisher extends Recorder implements SimpleBuildStep {
       if (Result.ABORTED.equals(build.getResult())) {
          logger.println("Build Aborted. Not looking for any TestNG results.");
          return;
+      }
+      if(failureOnFailedTestConfig && actionOnFailedTestConfig == null) {
+		logger.println("Found failureOnFailedTestConfig set to true, setting actionOnFailedTestConfig to mark build as \"FAILURE\"");
+		failureOnFailedTestConfig = false;
+		this.actionOnFailedTestConfig = 3;
       }
 
       String pathsPattern;
