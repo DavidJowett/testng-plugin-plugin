@@ -40,6 +40,8 @@ public class Publisher extends Recorder {
    //failed config mark build as failure
    public final Integer actionOnFailedTestConfig = 1;
 
+   private boolean failureOnFailedTestConfig = false;
+
    //should failed builds be included in graphs or not
    public final boolean showFailedBuilds;
    //v1.11 - marked transient and here just for backward compatibility
@@ -58,6 +60,15 @@ public class Publisher extends Recorder {
 
    @Extension
    public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
+
+   public boolean getFailureOnFailedTestConfig(){
+	return failureOnFailedTestConfig;
+   }
+
+   @DataBoundSetter
+   public void setFailureOnFailedTestConfig(boolean failureOnFailedTestConfig){
+	   this.failureOnFailedTestConfig = failureOnFailedTestConfig;
+   }
 
    @DataBoundConstructor
    public Publisher(String reportFilenamePattern, boolean escapeTestDescp, boolean escapeExceptionMsg,
@@ -110,6 +121,11 @@ public class Publisher extends Recorder {
       if (build.getResult().equals(Result.ABORTED)) {
          logger.println("Build Aborted. Not looking for any TestNG results.");
          return true;
+      }
+      if(failureOnFailedTestConfig && actionOnFailedTestConfig == null) {
+		logger.println("Found failureOnFailedTestConfig set to true, setting actionOnFailedTestConfig to mark build as \"FAILURE\"");
+		failureOnFailedTestConfig = false;
+		this.actionOnFailedTestConfig = 3;
       }
 
       // replace any variables in the user specified pattern
