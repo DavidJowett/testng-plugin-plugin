@@ -16,10 +16,10 @@
       </f:entry>
       <f:entry title="On failed configurations:" name="actionOnFailedTestConfig" field="actionOnFailedTestConfig">
 		<f:entry>
-                   <f:radio name="actionOnFailedTestConfig" title="Take no special action" value="1" checked="${instance.actionOnFailedTestConfig == 1} || ${instance.actionOnFailedTestConfig == null}" />
+                   <f:radio name="actionOnFailedTestConfig" title="Take no special action" value="1" checked="${instance.actionOnFailedTestConfig == 1 || instance.actionOnFailedTestConfig == null}" />
 		</f:entry>
 		<f:entry>
-                   <f:radio name="actionOnFailedTestConfig" title="Mark build as unstable" value="2" checked="${instance.actionOnFailedTestConfig ==2 }" />
+                   <f:radio name="actionOnFailedTestConfig" title="Mark build as unstable" value="2" checked="${instance.actionOnFailedTestConfig == 2 }" />
 		</f:entry>
 		<f:entry>
                    <f:radio name="actionOnFailedTestConfig" title="Mark build as failed" value="3" checked="${instance.actionOnFailedTestConfig == 3}" />
