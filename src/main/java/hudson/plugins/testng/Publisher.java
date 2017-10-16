@@ -258,7 +258,9 @@ public class Publisher extends Recorder implements SimpleBuildStep {
 			 default:
 				 break;
 		 }
-         } else {
+	}
+	/* Assess potential failed tests if result is not already FAILURE at this point from above config tests */
+	if(! Result.FAILURE.equals(build.getResult())) {
         	 if (thresholdMode == 1) { //number of tests
         		 if (results.getFailCount() > failedFails)  {
         			 logger.println(String.format("%d tests failed, which exceeded threshold of %d. Marking build as FAILURE",
