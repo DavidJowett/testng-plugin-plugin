@@ -235,9 +235,8 @@ public class TestNGTestResultBuildActionTest extends HudsonTestCase {
     public void test_failed_config_enabled_failedbuild() throws Exception {
         FreeStyleProject p = createFreeStyleProject();
         PublisherCtor publisherCtor = new PublisherCtor().setReportFilenamePattern("testng.xml")
-                .setFailureOnFailedTestConfig(true);
+                .setActionOnFailedTestConfig(3);
         publisherCtor.setFailedSkips(10); //these prevent the skip that results from config failure from determining result
-	publisherCtor.setActionOnFailedTestConfig(3);
         publisherCtor.setUnstableSkips(10);
         Publisher publisher = publisherCtor.getNewPublisher();
         p.getPublishersList().add(publisher);

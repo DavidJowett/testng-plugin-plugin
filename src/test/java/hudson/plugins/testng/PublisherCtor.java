@@ -46,6 +46,7 @@ public class PublisherCtor {
     public PublisherCtor setActionOnFailedTestConfig(int action) {
        this.actionOnFailedTestConfig = action;
        return this;
+   }
 
    public PublisherCtor setUnstableSkips(int unstableSkips) {
         this.unstableSkips = unstableSkips;

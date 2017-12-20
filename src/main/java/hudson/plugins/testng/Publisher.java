@@ -38,7 +38,7 @@ public class Publisher extends Recorder {
    //should exception messages be HTML escaped or not
    public final boolean escapeExceptionMsg;
    //failed config mark build as failure
-   public final Integer actionOnFailedTestConfig = 1;
+   public Integer actionOnFailedTestConfig;
 
    private boolean failureOnFailedTestConfig = false;
 
@@ -63,11 +63,6 @@ public class Publisher extends Recorder {
 
    public boolean getFailureOnFailedTestConfig(){
 	return failureOnFailedTestConfig;
-   }
-
-   @DataBoundSetter
-   public void setFailureOnFailedTestConfig(boolean failureOnFailedTestConfig){
-	   this.failureOnFailedTestConfig = failureOnFailedTestConfig;
    }
 
    @DataBoundConstructor
